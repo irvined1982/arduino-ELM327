@@ -1,0 +1,444 @@
+MACROS
+======
+.. c:macro:: ELM_TIMEOUT
+
+The timeout in milliseconds to wait for a response from the ELM device.
+If this timeout is reached before a prompt is returned then functions
+will return ELM_NO_RESPONSE.
+
+.. c:macro:: ELM_BAUD_RATE
+
+
+The BAUD rate to use when communicating with the ELM device. Generally
+this is 9600 however it can be changed in both hardware and software.
+This setting is the speed that the ELM device will use at startup.
+
+
+.. c:macro:: ELM_PORT
+
+
+The serial port/device that the ELM327 chip is connected to.
+
+
+.. c:macro:: ELM_SUCCESS
+
+
+Return code when communication with the ELM device returned succesfully
+
+
+.. c:macro:: ELM_NO_RESPONSE
+
+Return code when communication with the ELM device failed as there was
+no response.
+
+.. c:macro:: ELM_BUFFER_OVERFLOW
+
+
+Return code when the ELM device returned more data than the given buffer
+was able to hold.
+
+
+
+.. c:macro:: ELM_GARBAGE
+
+Return code when the ELM device returns unexpected data.  This is
+usually when the response does not contain byte values, or contains
+unexpected output.
+
+.. c:macro:: ELM_UNABLE_TO_CONNECT
+
+Return code when the ELM device is unable to connect to the vehicle
+The ELM327 has tried all of the available protocols, and could not
+detect a compatible one. This could be because your vehicle uses an
+unsupported protocol, or could be as simple as forgetting to turn the
+ignition key on. Check all of your connections, and the ignition,
+then try the command again.
+
+.. c:macro:: ELM_NO_DATA
+
+Return code when the ELM device returns NO DATA.  The IC waited for
+the period of time that was set by AT ST, and detected no response
+from the vehicle. It may be that the vehicle had no data to offer
+for that particular PID, that the mode requested was not supported,
+that the vehicle was attending to higher priority issues, or in the
+case of the CAN systems, the filter may have been set so that the
+response was ignored, even though one was sent. If you are certain
+that there should have been a response, try increasing the ST time
+(to be sure that you have allowed enough time for the ECU to
+respond), or restoring the CAN filter to its default setting.
+
+Classes
+=======
+
+.. cpp:class:: Elm327
+
+    Interface for the ELM327 multi-function OBDII Interpreter IC.  Providing
+    both a low level interface to run commands directly on the IC, and a
+    higher level API that provides convenience functions to read from the OBD2
+    PIDS, read and reset error codes, and otherwise interrogate the connected
+    vehicle.
+
+    :High Level API:
+
+    The high levle API provides an easy to use way to get OBD metrics from
+    the vehicle.  All high level functions return the status, and set one or
+    more variables to the converted values.
+
+    Regardless of the API level used, the constants for timeout, BAUD rate and
+    port must be configured, prior to including the ELM327 header.
+
+    The Elm class contains all the methods used to interact with the ELM device,
+    this must be initialized using the begin() method.  All methods (including
+    begin) return the status.  This is a byte, with constants defined for SUCCESS
+    TIMEOUT, etc.
+
+    To read a value from the OBD controller,  call the method with an appropriate
+    variable.  Upon success the variable will contain the converted value.::
+
+        #define ELM_TIMEOUT 9000
+        #define ELM_BAUD_RATE 9600
+        #define ELM_PORT Serial3
+        #include <ELM327.h>
+
+        Elm327 Elm;
+        byte status;
+        int temperature;
+
+        status=Elm.begin();
+        if (status != ELM_SUCCESS){
+            Serial.print("Elm begin failed with error: ");
+            Serial.println(status);
+        }
+
+        status=Elm.coolantTemperature(temperature);
+        if (status  == ELM_SUCCESS){
+            Serial.print("Coolant Temperature: ");
+            Serial.println(temperature);
+        }else{
+            Serial.print("Elm begin failed with error: ");
+            Serial.println(status);
+        }
+
+    :Low Level API:
+
+    In addition to being able to query common OBD parameters, it is possible
+    to run arbitrary commands directly on the ELM device, or request PIDS and
+    raw commands.
+
+    To run an arbitrary command on the ELM device, runCommand can be used.
+    This will run the given command and wait until the prompt is returned or
+    ELM_TIMEOUT is reached.  The buffer is filled with any data returned from
+    the ELM controller.
+
+    You can also request byte values, for example if you are running a command
+    that will return a series of bytes, getBytes can be used.  This runs the
+    command, and parses the output into an array of bytes.::
+
+        #include <ELM327.h>
+        status=Elm.begin();
+        if (status != ELM_SUCCESS){
+
+            Serial.print("Elm begin failed with error: ");
+            Serial.println(status);
+        }
+        byte values[1];
+        status=getBytes("01","41","05",values,1);
+        if (status != ELM_SUCCESS){
+            Serial.print("Failed to get value for Temperature: ");
+            Serial.println(status);
+        } else{
+            Serial.print ("Elm returned:  ");
+            Serial.println(values[0], HEX);
+            Serial.print ("Converted to degrees this is: ");
+            Serial.print(values[0]-40,DEC);
+        }
+
+.. cpp:function:: byte Elm327::begin()
+
+    Configures the ELM Device by sending a series of commands:
+        - Reset
+        - Echo Off
+        - Auto detect connection.
+
+    :return: ELM_SUCCESS when the ELM device returned the anticipated response. Else returns an ELM error code.
+
+.. cpp:function:: byte Elm327::getVersion(String &rev)
+
+    Issues the ATI command to the ELM device.  The ATI command
+    causes the chip to identify itself, by printing the startup
+    product ID string (currently ‘ELM327 v1.3a’). Software can
+    use this to determine exactly which integrated circuit it is
+    talking to, without having to reset the IC.
+
+    :param String rev: String used to store the revision and identifier.
+
+.. cpp:function:: byte Elm327::getIgnMon(bool &powered)
+
+    Issues the AT IGN command to the elm device.  This command provides
+    a means of checking the voltage level at pin 15. It assumes that
+    the logic level is related to the ignition voltage, so if the input
+    is at a high level, then rev shall be set to true (On) where as a
+    low level shall set rev to false. (Off)
+
+    :param bool powered: Boolean value that is set to the ignition status.
+
+.. cpp:function:: byte Elm327::getVoltage(float &voltage)
+
+    Issues the AT RV command to the Elm device.  This initiates the
+    reading of the voltage present at pin 2, and the conversion of it to
+    a decimal voltage. By default, it is assumed that the input is
+    connected to the voltage to be measured through a 47KΩ and 10KΩ
+    resistor divider (with the 10KΩ connected from pin 2 to Vss), and that
+    the ELM327 supply is a nominal 5V. This will allow for the measurement
+    of input voltages up to about 28V, with an uncalibrated accuracy of
+    typically about 2%.
+
+    :param float voltage: Float that is set to the detected voltage.
+
+.. cpp:function:: byte Elm327::engineLoad(byte &load)
+
+    Gets the Calculated Engine Load.  Reads PID 04 from the OBD interface and sets
+    load to the the value returned after conversion.
+
+    :param byte load: value is set to the calculated Engine Load.
+        - Minimum value: 0
+        - Maximum value: 100
+        - Units: %
+
+.. cpp:function:: byte Elm327::coolantTemperature(int &temp)
+
+    Gets the Coolant Temperature.  Reads PID 05 from the OBD interface and sets
+    temp to the value returned after conversion.
+
+    :param int temp: Signed integer value is set to the coolant temperature.
+        - Minimum: -40
+        - Maximum Value: 215
+        - Units: °C
+
+.. cpp:function:: byte Elm327::fuelTrimBank1ShortTerm(int &percent)
+
+    Gets the fuel trim for bank 1 in the short term.  Reads PID 06 from the OBD
+    interface and sets percent to the value returned after conversion.
+
+    :param int percent: Signed integer is set to the percent fuel trim.
+        - Minimum Value: -100
+        - Maximum Value: 99.2
+        - Units: %
+
+.. cpp:function:: byte Elm327::fuelTrimBank2ShortTerm(int &percent)
+
+    Gets the fuel trim for bank 2 in the short term.  Reads PID 07 from the OBD
+    interface and sets percent to the value returned after conversion.
+
+    :param int percent: Signed integer is set to the percent fuel trim.
+        - Minimum Value: -100
+        - Maximum Value: 99.2
+        - Units: %
+
+.. cpp:function:: byte Elm327::fuelTrimBank1LongTerm(int &percent)
+
+    Gets the fuel trim for bank 1 in the long term.  Reads PID 08 from the OBD
+    interface and sets percent to the value returned after conversion.
+
+    :param int percent: Signed integer is set to the percent fuel trim.
+        - Minimum Value: -100
+        - Maximum Value: 99.2
+        - Units: %
+
+.. cpp:function:: byte Elm327::fuelTrimBank2LongTerm(int &percent)
+
+    Gets the fuel trim for bank 2 in the long term.  Reads PID 09 from the OBD
+    interface and sets percent to the value returned after conversion.
+
+    :param int percent: Signed integer is set to the percent fuel trim.
+        - Minimum Value: -100
+        - Maximum Value: 99.2
+        - Units: %
+
+.. cpp:function:: byte Elm327::fuelPressure(int &pressure)
+
+    Gets the fuel pressure.  Reads PID 0A from the OBD interface and sets pressure
+    to the value returned after conversion.
+
+    :param int pressure: Signed integer is set to the fuel pressure.
+        - Minimum Value: 0
+        - Maximum Value: 765
+        - Units: kPa (Absolute)
+
+.. cpp:function:: byte Elm327::intakeManifoldAbsolutePressure(byte &pressure)
+
+    Gets the Intake Manifold Absolute Pressure.  Reads PID 0B from the OBD
+    interface and sets pressure to the value returned after conversion.
+
+    :param byte pressure: Byte set to the manifold pressure
+        - Minimum Value: 0
+        - Maximum Value: 255
+        - Units: kPa (Absolute)
+
+.. cpp:function:: byte Elm327::engineRPM(int &rpm)
+
+    Gets the current engine RPM.  Reads PID 0C from the OBD Interface and
+    sets rpm to the value returned after conversion.
+
+    :param unsigned int rpm: Unsigned integer is set to the current engine rpm.
+        - Minimum Value: 0
+        - Maximum Value: 16,383
+        - Units: RPM
+
+.. cpp:function:: byte Elm327::vehicleSpeed(byte &speed)
+
+    Gets the current speed of the vehicle in km/h.  Reads PID 0D form the OBD
+    interface and sets speed to the value returned after conversion.
+
+    :param byte speed: Byte is set to the current speed of the vehicle.
+        - Minimum Value: 0
+        - Maximum Value: 255
+        - Units: km/h
+
+.. cpp:function:: byte Elm327::timingAdvance(int &advance)
+
+    Gets the timing advance of the vehicle relative to TDC on the number one cylinder.
+    Reads PID 0E from the OBD interface and sets advance to the value returned after
+    conversion.
+
+    :param int advance: Integer set to the timing advance value.
+        - Minimum Value: -64
+        - Maximum Value: 63.5
+        - Units: ° from TDC
+
+.. cpp:function:: byte Elm327::intakeAirTemperature(int &temperature)
+
+    Gets the intake air temperature.  Reads PID 0F from the OBD interface and sets
+    temperature to the value returned after conversion.
+
+    :param int temperature: Integer set to the intake air temperature
+        - Minimum Value: -40
+        - Maximum Value: 215
+        - °C
+
+.. cpp:function:: byte Elm327::MAFAirFlowRate(unsigned int &rate)
+
+    Gets the Manifold Absolute Flow (MAF) rate.  Reads PID 10 from the OBD interface
+    and sets rate to the value returned after conversion.
+
+    :param int rate: Integer value set to the flow rate.
+        - Minimum Value: -40
+        - Maximum Value: 215
+        - °C
+
+.. cpp:function:: byte Elm327::hrottlePosition(byte &position)
+
+    Gets the current throttle position. Reads PID 11 from the OBD interface
+    and sets position to the value returned after conversion.
+
+    :param byte position: Byte containing throttle position.
+        - Minimum Value: 0
+        - Maximum Value: 100
+        - %
+
+.. cpp:function:: byte Elm327::o2SensorBank1Sensor1(byte &voltage, byte &trim)
+
+.. cpp:function:: byte Elm327::o2SensorBank1Sensor2(byte &voltage, byte &trim)
+
+.. cpp:function:: byte Elm327::o2SensorBank1Sensor3(byte &voltage, byte &trim)
+
+.. cpp:function:: byte Elm327::o2SensorBank1Sensor4(byte &voltage, byte &trim)
+
+.. cpp:function:: byte Elm327::o2SensorBank2Sensor1(byte &voltage, byte &trim)
+
+.. cpp:function:: byte Elm327::o2SensorBank2Sensor2(byte &voltage, byte &trim)
+
+.. cpp:function:: byte Elm327::o2SensorBank2Sensor3(byte &voltage, byte &trim)
+
+.. cpp:function:: byte Elm327::o2SensorBank2Sensor4(byte &voltage, byte &trim)
+
+.. cpp:function:: byte Elm327::o2sensorRead(const char *bank, byte &voltage, byte &trim)
+
+.. cpp:function:: byte Elm327::auxiliaryInputStatus(bool &auxStatus)
+
+.. cpp:function:: byte Elm327::engineRunTime(unsigned int &runTime)
+
+.. cpp:function:: byte Elm327::distanceMIL(unsigned int &distance)
+
+.. cpp:function:: byte Elm327::relativeFuelRailPressure(unsigned int &pressure)
+
+.. cpp:function:: byte Elm327::absoluteFuelRailPressure(unsigned int &pressure)
+
+.. cpp:function:: byte Elm327::o2S1WRVoltage(unsigned int &equivRatio, unsigned int &voltage)
+
+.. cpp:function:: byte Elm327::o2S2WRVoltage(unsigned int &equivRatio, unsigned int &voltage)
+
+.. cpp:function:: byte Elm327::o2S3WRVoltage(unsigned int &equivRatio, unsigned int &voltage)
+
+.. cpp:function:: byte Elm327::o2S4WRVoltage(unsigned int &equivRatio, unsigned int &voltage)
+
+.. cpp:function:: byte Elm327::o2S5WRVoltage(unsigned int &equivRatio, unsigned int &voltage)
+
+.. cpp:function:: byte Elm327::o2S6WRVoltage(unsigned int &equivRatio, unsigned int &voltage)
+
+.. cpp:function:: byte Elm327::o2S7WRVoltage(unsigned int &equivRatio, unsigned int &voltage)
+
+.. cpp:function:: byte Elm327::o2S8WRVoltage(unsigned int &equivRatio, unsigned int &voltage)
+
+.. cpp:function:: byte Elm327::commandedEGR(byte &egr)
+
+.. cpp:function:: byte Elm327::EGRError(int &error)
+
+.. cpp:function:: byte Elm327::commandedEvaporativePurge(byte &purge)
+
+.. cpp:function:: byte Elm327::fuelLevel(byte &level)
+
+.. cpp:function:: byte Elm327::warmUpsSinceLastCleared(byte &warmUps)
+
+.. cpp:function:: byte Elm327::distanceSinceLastCleared(unsigned int &distance)
+
+.. cpp:function:: byte Elm327::evapPressure(int &pressure)
+
+.. cpp:function:: byte barometricPressure(byte  &pressure)
+
+.. cpp:function:: byte Elm327::o2S1WRCurrent(unsigned int &equivRatio, int &current)
+
+.. cpp:function:: byte Elm327::o2S2WRCurrent(unsigned int &equivRatio, int &current)
+
+.. cpp:function:: byte Elm327::o2S3WRCurrent(unsigned int &equivRatio, int &current)
+
+.. cpp:function:: byte Elm327::o2S4WRCurrent(unsigned int &equivRatio, int &current)
+
+.. cpp:function:: byte Elm327::o2S5WRCurrent(unsigned int &equivRatio, int &current)
+
+.. cpp:function:: byte Elm327::o2S6WRCurrent(unsigned int &equivRatio, int &current)
+
+.. cpp:function:: byte Elm327::o2S7WRCurrent(unsigned int &equivRatio, int &current)
+
+.. cpp:function:: byte Elm327::o2S8WRCurrent(unsigned int &equivRatio, int &current)
+
+.. cpp:function:: byte Elm327::catalystTemperatureBank1Sensor1( int &temperature)
+
+.. cpp:function:: byte Elm327::catalystTemperatureBank2Sensor1( int &temperature)
+
+.. cpp:function:: byte Elm327::catalystTemperatureBank1Sensor2( int &temperature)
+
+.. cpp:function:: byte Elm327::catalystTemperatureBank2Sensor2( int &temperature)
+
+.. cpp:function:: byte Elm327::controlModuleVoltage(unsigned int &voltage)
+
+.. cpp:function:: byte Elm327::absoluteLoadValue(unsigned int &load)
+
+.. cpp:function:: byte Elm327::commandEquivalenceRatio(float &ratio)
+
+.. cpp:function:: byte Elm327::relativeThrottlePosition(byte &position)
+
+.. cpp:function:: byte Elm327::ambientAirTemperature(int &temperature)
+
+.. cpp:function:: byte Elm327::absoluteThrottlePositionB(byte &position)
+
+.. cpp:function:: byte Elm327::absoluteThrottlePositionC(byte &position)
+
+.. cpp:function:: byte Elm327::acceleratorPedalPositionD(byte &position)
+
+.. cpp:function:: byte Elm327::acceleratorPedalPositionE(byte &position)
+
+.. cpp:function:: byte Elm327::acceleratorPedalPositionF(byte &position)
+
+.. cpp:function:: byte Elm327::commandedThrottleActuator(byte &position)
+		

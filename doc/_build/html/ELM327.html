@@ -1,0 +1,891 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>MACROS &mdash; Arduino ELM327  1.0 documentation</title>
+    
+    <link rel="stylesheet" href="_static/default.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    './',
+        VERSION:     ' 1.0',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/underscore.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <link rel="top" title="Arduino ELM327  1.0 documentation" href="index.html" />
+    <link rel="prev" title="Arduino ELM327’s documentation!" href="index.html" /> 
+  </head>
+  <body>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="index.html" title="Arduino ELM327’s documentation!"
+             accesskey="P">previous</a> |</li>
+        <li><a href="index.html">Arduino ELM327  1.0 documentation</a> &raquo;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+  <div class="section" id="macros">
+<h1>MACROS<a class="headerlink" href="#macros" title="Permalink to this headline">¶</a></h1>
+<dl class="macro">
+<dt id="c.ELM_TIMEOUT">
+<tt class="descname">ELM_TIMEOUT</tt><a class="headerlink" href="#c.ELM_TIMEOUT" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<p>The timeout in milliseconds to wait for a response from the ELM device.
+If this timeout is reached before a prompt is returned then functions
+will return ELM_NO_RESPONSE.</p>
+<dl class="macro">
+<dt id="c.ELM_BAUD_RATE">
+<tt class="descname">ELM_BAUD_RATE</tt><a class="headerlink" href="#c.ELM_BAUD_RATE" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<p>The BAUD rate to use when communicating with the ELM device. Generally
+this is 9600 however it can be changed in both hardware and software.
+This setting is the speed that the ELM device will use at startup.</p>
+<dl class="macro">
+<dt id="c.ELM_PORT">
+<tt class="descname">ELM_PORT</tt><a class="headerlink" href="#c.ELM_PORT" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<p>The serial port/device that the ELM327 chip is connected to.</p>
+<dl class="macro">
+<dt id="c.ELM_SUCCESS">
+<tt class="descname">ELM_SUCCESS</tt><a class="headerlink" href="#c.ELM_SUCCESS" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<p>Return code when communication with the ELM device returned succesfully</p>
+<dl class="macro">
+<dt id="c.ELM_NO_RESPONSE">
+<tt class="descname">ELM_NO_RESPONSE</tt><a class="headerlink" href="#c.ELM_NO_RESPONSE" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<p>Return code when communication with the ELM device failed as there was
+no response.</p>
+<dl class="macro">
+<dt id="c.ELM_BUFFER_OVERFLOW">
+<tt class="descname">ELM_BUFFER_OVERFLOW</tt><a class="headerlink" href="#c.ELM_BUFFER_OVERFLOW" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<p>Return code when the ELM device returned more data than the given buffer
+was able to hold.</p>
+<dl class="macro">
+<dt id="c.ELM_GARBAGE">
+<tt class="descname">ELM_GARBAGE</tt><a class="headerlink" href="#c.ELM_GARBAGE" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<p>Return code when the ELM device returns unexpected data.  This is
+usually when the response does not contain byte values, or contains
+unexpected output.</p>
+<dl class="macro">
+<dt id="c.ELM_UNABLE_TO_CONNECT">
+<tt class="descname">ELM_UNABLE_TO_CONNECT</tt><a class="headerlink" href="#c.ELM_UNABLE_TO_CONNECT" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<p>Return code when the ELM device is unable to connect to the vehicle
+The ELM327 has tried all of the available protocols, and could not
+detect a compatible one. This could be because your vehicle uses an
+unsupported protocol, or could be as simple as forgetting to turn the
+ignition key on. Check all of your connections, and the ignition,
+then try the command again.</p>
+<dl class="macro">
+<dt id="c.ELM_NO_DATA">
+<tt class="descname">ELM_NO_DATA</tt><a class="headerlink" href="#c.ELM_NO_DATA" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<p>Return code when the ELM device returns NO DATA.  The IC waited for
+the period of time that was set by AT ST, and detected no response
+from the vehicle. It may be that the vehicle had no data to offer
+for that particular PID, that the mode requested was not supported,
+that the vehicle was attending to higher priority issues, or in the
+case of the CAN systems, the filter may have been set so that the
+response was ignored, even though one was sent. If you are certain
+that there should have been a response, try increasing the ST time
+(to be sure that you have allowed enough time for the ECU to
+respond), or restoring the CAN filter to its default setting.</p>
+</div>
+<div class="section" id="classes">
+<h1>Classes<a class="headerlink" href="#classes" title="Permalink to this headline">¶</a></h1>
+<dl class="class">
+<dt id="Elm327">
+<em class="property">class </em><tt class="descname">Elm327</tt><a class="headerlink" href="#Elm327" title="Permalink to this definition">¶</a></dt>
+<dd><p>Interface for the ELM327 multi-function OBDII Interpreter IC.  Providing
+both a low level interface to run commands directly on the IC, and a
+higher level API that provides convenience functions to read from the OBD2
+PIDS, read and reset error codes, and otherwise interrogate the connected
+vehicle.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">High Level API:</th><td class="field-body"></td>
+</tr>
+</tbody>
+</table>
+<p>The high levle API provides an easy to use way to get OBD metrics from
+the vehicle.  All high level functions return the status, and set one or
+more variables to the converted values.</p>
+<p>Regardless of the API level used, the constants for timeout, BAUD rate and
+port must be configured, prior to including the ELM327 header.</p>
+<p>The Elm class contains all the methods used to interact with the ELM device,
+this must be initialized using the begin() method.  All methods (including
+begin) return the status.  This is a byte, with constants defined for SUCCESS
+TIMEOUT, etc.</p>
+<p>To read a value from the OBD controller,  call the method with an appropriate
+variable.  Upon success the variable will contain the converted value.:</p>
+<div class="highlight-python"><div class="highlight"><pre>#define ELM_TIMEOUT 9000
+#define ELM_BAUD_RATE 9600
+#define ELM_PORT Serial3
+#include &lt;ELM327.h&gt;
+
+Elm327 Elm;
+byte status;
+int temperature;
+
+status=Elm.begin();
+if (status != ELM_SUCCESS){
+    Serial.print(&quot;Elm begin failed with error: &quot;);
+    Serial.println(status);
+}
+
+status=Elm.coolantTemperature(temperature);
+if (status  == ELM_SUCCESS){
+    Serial.print(&quot;Coolant Temperature: &quot;);
+    Serial.println(temperature);
+}else{
+    Serial.print(&quot;Elm begin failed with error: &quot;);
+    Serial.println(status);
+}
+</pre></div>
+</div>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Low Level API:</th><td class="field-body"></td>
+</tr>
+</tbody>
+</table>
+<p>In addition to being able to query common OBD parameters, it is possible
+to run arbitrary commands directly on the ELM device, or request PIDS and
+raw commands.</p>
+<p>To run an arbitrary command on the ELM device, runCommand can be used.
+This will run the given command and wait until the prompt is returned or
+ELM_TIMEOUT is reached.  The buffer is filled with any data returned from
+the ELM controller.</p>
+<p>You can also request byte values, for example if you are running a command
+that will return a series of bytes, getBytes can be used.  This runs the
+command, and parses the output into an array of bytes.:</p>
+<div class="highlight-python"><div class="highlight"><pre>#include &lt;ELM327.h&gt;
+status=Elm.begin();
+if (status != ELM_SUCCESS){
+
+    Serial.print(&quot;Elm begin failed with error: &quot;);
+    Serial.println(status);
+}
+byte values[1];
+status=getBytes(&quot;01&quot;,&quot;41&quot;,&quot;05&quot;,values,1);
+if (status != ELM_SUCCESS){
+    Serial.print(&quot;Failed to get value for Temperature: &quot;);
+    Serial.println(status);
+} else{
+    Serial.print (&quot;Elm returned:  &quot;);
+    Serial.println(values[0], HEX);
+    Serial.print (&quot;Converted to degrees this is: &quot;);
+    Serial.print(values[0]-40,DEC);
+}
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="function">
+<dt id="Elm327::begin">
+byte <tt class="descclassname">Elm327::</tt><tt class="descname">begin</tt><big>(</big><big>)</big><a class="headerlink" href="#Elm327::begin" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="docutils">
+<dt>Configures the ELM Device by sending a series of commands:</dt>
+<dd><ul class="first last simple">
+<li>Reset</li>
+<li>Echo Off</li>
+<li>Auto detect connection.</li>
+</ul>
+</dd>
+</dl>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">ELM_SUCCESS when the ELM device returned the anticipated response. Else returns an ELM error code.</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="Elm327::getVersion__StringR">
+byte <tt class="descclassname">Elm327::</tt><tt class="descname">getVersion</tt><big>(</big>String&amp; <em>rev</em><big>)</big><a class="headerlink" href="#Elm327::getVersion__StringR" title="Permalink to this definition">¶</a></dt>
+<dd><p>Issues the ATI command to the ELM device.  The ATI command
+causes the chip to identify itself, by printing the startup
+product ID string (currently ‘ELM327 v1.3a’). Software can
+use this to determine exactly which integrated circuit it is
+talking to, without having to reset the IC.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name" colspan="2">Parameters String rev:</th></tr>
+<tr class="field-odd field"><td>&nbsp;</td><td class="field-body">String used to store the revision and identifier.</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="Elm327::getIgnMon__bR">
+byte <tt class="descclassname">Elm327::</tt><tt class="descname">getIgnMon</tt><big>(</big>bool&amp; <em>powered</em><big>)</big><a class="headerlink" href="#Elm327::getIgnMon__bR" title="Permalink to this definition">¶</a></dt>
+<dd><p>Issues the AT IGN command to the elm device.  This command provides
+a means of checking the voltage level at pin 15. It assumes that
+the logic level is related to the ignition voltage, so if the input
+is at a high level, then rev shall be set to true (On) where as a
+low level shall set rev to false. (Off)</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name" colspan="2">Parameters bool powered:</th></tr>
+<tr class="field-odd field"><td>&nbsp;</td><td class="field-body">Boolean value that is set to the ignition status.</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="Elm327::getVoltage__floatR">
+byte <tt class="descclassname">Elm327::</tt><tt class="descname">getVoltage</tt><big>(</big>float&amp; <em>voltage</em><big>)</big><a class="headerlink" href="#Elm327::getVoltage__floatR" title="Permalink to this definition">¶</a></dt>
+<dd><p>Issues the AT RV command to the Elm device.  This initiates the
+reading of the voltage present at pin 2, and the conversion of it to
+a decimal voltage. By default, it is assumed that the input is
+connected to the voltage to be measured through a 47KΩ and 10KΩ
+resistor divider (with the 10KΩ connected from pin 2 to Vss), and that
+the ELM327 supply is a nominal 5V. This will allow for the measurement
+of input voltages up to about 28V, with an uncalibrated accuracy of
+typically about 2%.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name" colspan="2">Parameters float voltage:</th></tr>
+<tr class="field-odd field"><td>&nbsp;</td><td class="field-body">Float that is set to the detected voltage.</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="Elm327::engineLoad__byteR">
+byte <tt class="descclassname">Elm327::</tt><tt class="descname">engineLoad</tt><big>(</big>byte&amp; <em>load</em><big>)</big><a class="headerlink" href="#Elm327::engineLoad__byteR" title="Permalink to this definition">¶</a></dt>
+<dd><p>Gets the Calculated Engine Load.  Reads PID 04 from the OBD interface and sets
+load to the the value returned after conversion.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name" colspan="2">Parameters byte load:</th></tr>
+<tr class="field-odd field"><td>&nbsp;</td><td class="field-body">value is set to the calculated Engine Load.
+- Minimum value: 0
+- Maximum value: 100
+- Units: %</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="Elm327::coolantTemperature__iR">
+byte <tt class="descclassname">Elm327::</tt><tt class="descname">coolantTemperature</tt><big>(</big>int&amp; <em>temp</em><big>)</big><a class="headerlink" href="#Elm327::coolantTemperature__iR" title="Permalink to this definition">¶</a></dt>
+<dd><p>Gets the Coolant Temperature.  Reads PID 05 from the OBD interface and sets
+temp to the value returned after conversion.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name" colspan="2">Parameters int temp:</th></tr>
+<tr class="field-odd field"><td>&nbsp;</td><td class="field-body">Signed integer value is set to the coolant temperature.
+- Minimum: -40
+- Maximum Value: 215
+- Units: °C</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="Elm327::fuelTrimBank1ShortTerm__iR">
+byte <tt class="descclassname">Elm327::</tt><tt class="descname">fuelTrimBank1ShortTerm</tt><big>(</big>int&amp; <em>percent</em><big>)</big><a class="headerlink" href="#Elm327::fuelTrimBank1ShortTerm__iR" title="Permalink to this definition">¶</a></dt>
+<dd><p>Gets the fuel trim for bank 1 in the short term.  Reads PID 06 from the OBD
+interface and sets percent to the value returned after conversion.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name" colspan="2">Parameters int percent:</th></tr>
+<tr class="field-odd field"><td>&nbsp;</td><td class="field-body">Signed integer is set to the percent fuel trim.
+- Minimum Value: -100
+- Maximum Value: 99.2
+- Units: %</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="Elm327::fuelTrimBank2ShortTerm__iR">
+byte <tt class="descclassname">Elm327::</tt><tt class="descname">fuelTrimBank2ShortTerm</tt><big>(</big>int&amp; <em>percent</em><big>)</big><a class="headerlink" href="#Elm327::fuelTrimBank2ShortTerm__iR" title="Permalink to this definition">¶</a></dt>
+<dd><p>Gets the fuel trim for bank 2 in the short term.  Reads PID 07 from the OBD
+interface and sets percent to the value returned after conversion.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name" colspan="2">Parameters int percent:</th></tr>
+<tr class="field-odd field"><td>&nbsp;</td><td class="field-body">Signed integer is set to the percent fuel trim.
+- Minimum Value: -100
+- Maximum Value: 99.2
+- Units: %</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="Elm327::fuelTrimBank1LongTerm__iR">
+byte <tt class="descclassname">Elm327::</tt><tt class="descname">fuelTrimBank1LongTerm</tt><big>(</big>int&amp; <em>percent</em><big>)</big><a class="headerlink" href="#Elm327::fuelTrimBank1LongTerm__iR" title="Permalink to this definition">¶</a></dt>
+<dd><p>Gets the fuel trim for bank 1 in the long term.  Reads PID 08 from the OBD
+interface and sets percent to the value returned after conversion.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name" colspan="2">Parameters int percent:</th></tr>
+<tr class="field-odd field"><td>&nbsp;</td><td class="field-body">Signed integer is set to the percent fuel trim.
+- Minimum Value: -100
+- Maximum Value: 99.2
+- Units: %</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="Elm327::fuelTrimBank2LongTerm__iR">
+byte <tt class="descclassname">Elm327::</tt><tt class="descname">fuelTrimBank2LongTerm</tt><big>(</big>int&amp; <em>percent</em><big>)</big><a class="headerlink" href="#Elm327::fuelTrimBank2LongTerm__iR" title="Permalink to this definition">¶</a></dt>
+<dd><p>Gets the fuel trim for bank 2 in the long term.  Reads PID 09 from the OBD
+interface and sets percent to the value returned after conversion.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name" colspan="2">Parameters int percent:</th></tr>
+<tr class="field-odd field"><td>&nbsp;</td><td class="field-body">Signed integer is set to the percent fuel trim.
+- Minimum Value: -100
+- Maximum Value: 99.2
+- Units: %</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="Elm327::fuelPressure__iR">
+byte <tt class="descclassname">Elm327::</tt><tt class="descname">fuelPressure</tt><big>(</big>int&amp; <em>pressure</em><big>)</big><a class="headerlink" href="#Elm327::fuelPressure__iR" title="Permalink to this definition">¶</a></dt>
+<dd><p>Gets the fuel pressure.  Reads PID 0A from the OBD interface and sets pressure
+to the value returned after conversion.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name" colspan="2">Parameters int pressure:</th></tr>
+<tr class="field-odd field"><td>&nbsp;</td><td class="field-body">Signed integer is set to the fuel pressure.
+- Minimum Value: 0
+- Maximum Value: 765
+- Units: kPa (Absolute)</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="Elm327::intakeManifoldAbsolutePressure__byteR">
+byte <tt class="descclassname">Elm327::</tt><tt class="descname">intakeManifoldAbsolutePressure</tt><big>(</big>byte&amp; <em>pressure</em><big>)</big><a class="headerlink" href="#Elm327::intakeManifoldAbsolutePressure__byteR" title="Permalink to this definition">¶</a></dt>
+<dd><p>Gets the Intake Manifold Absolute Pressure.  Reads PID 0B from the OBD
+interface and sets pressure to the value returned after conversion.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name" colspan="2">Parameters byte pressure:</th></tr>
+<tr class="field-odd field"><td>&nbsp;</td><td class="field-body">Byte set to the manifold pressure
+- Minimum Value: 0
+- Maximum Value: 255
+- Units: kPa (Absolute)</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="Elm327::engineRPM__iR">
+byte <tt class="descclassname">Elm327::</tt><tt class="descname">engineRPM</tt><big>(</big>int&amp; <em>rpm</em><big>)</big><a class="headerlink" href="#Elm327::engineRPM__iR" title="Permalink to this definition">¶</a></dt>
+<dd><p>Gets the current engine RPM.  Reads PID 0C from the OBD Interface and
+sets rpm to the value returned after conversion.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name" colspan="2">Parameters unsigned int rpm:</th></tr>
+<tr class="field-odd field"><td>&nbsp;</td><td class="field-body">Unsigned integer is set to the current engine rpm.
+- Minimum Value: 0
+- Maximum Value: 16,383
+- Units: RPM</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="Elm327::vehicleSpeed__byteR">
+byte <tt class="descclassname">Elm327::</tt><tt class="descname">vehicleSpeed</tt><big>(</big>byte&amp; <em>speed</em><big>)</big><a class="headerlink" href="#Elm327::vehicleSpeed__byteR" title="Permalink to this definition">¶</a></dt>
+<dd><p>Gets the current speed of the vehicle in km/h.  Reads PID 0D form the OBD
+interface and sets speed to the value returned after conversion.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name" colspan="2">Parameters byte speed:</th></tr>
+<tr class="field-odd field"><td>&nbsp;</td><td class="field-body">Byte is set to the current speed of the vehicle.
+- Minimum Value: 0
+- Maximum Value: 255
+- Units: km/h</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="Elm327::timingAdvance__iR">
+byte <tt class="descclassname">Elm327::</tt><tt class="descname">timingAdvance</tt><big>(</big>int&amp; <em>advance</em><big>)</big><a class="headerlink" href="#Elm327::timingAdvance__iR" title="Permalink to this definition">¶</a></dt>
+<dd><p>Gets the timing advance of the vehicle relative to TDC on the number one cylinder.
+Reads PID 0E from the OBD interface and sets advance to the value returned after
+conversion.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name" colspan="2">Parameters int advance:</th></tr>
+<tr class="field-odd field"><td>&nbsp;</td><td class="field-body">Integer set to the timing advance value.
+- Minimum Value: -64
+- Maximum Value: 63.5
+- Units: ° from TDC</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="Elm327::intakeAirTemperature__iR">
+byte <tt class="descclassname">Elm327::</tt><tt class="descname">intakeAirTemperature</tt><big>(</big>int&amp; <em>temperature</em><big>)</big><a class="headerlink" href="#Elm327::intakeAirTemperature__iR" title="Permalink to this definition">¶</a></dt>
+<dd><p>Gets the intake air temperature.  Reads PID 0F from the OBD interface and sets
+temperature to the value returned after conversion.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name" colspan="2">Parameters int temperature:</th></tr>
+<tr class="field-odd field"><td>&nbsp;</td><td class="field-body">Integer set to the intake air temperature
+- Minimum Value: -40
+- Maximum Value: 215
+- °C</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="Elm327::MAFAirFlowRate__unsigned-iR">
+byte <tt class="descclassname">Elm327::</tt><tt class="descname">MAFAirFlowRate</tt><big>(</big>unsigned int&amp; <em>rate</em><big>)</big><a class="headerlink" href="#Elm327::MAFAirFlowRate__unsigned-iR" title="Permalink to this definition">¶</a></dt>
+<dd><p>Gets the Manifold Absolute Flow (MAF) rate.  Reads PID 10 from the OBD interface
+and sets rate to the value returned after conversion.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name" colspan="2">Parameters int rate:</th></tr>
+<tr class="field-odd field"><td>&nbsp;</td><td class="field-body">Integer value set to the flow rate.
+- Minimum Value: -40
+- Maximum Value: 215
+- °C</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="Elm327::hrottlePosition__byteR">
+byte <tt class="descclassname">Elm327::</tt><tt class="descname">hrottlePosition</tt><big>(</big>byte&amp; <em>position</em><big>)</big><a class="headerlink" href="#Elm327::hrottlePosition__byteR" title="Permalink to this definition">¶</a></dt>
+<dd><p>Gets the current throttle position. Reads PID 11 from the OBD interface
+and sets position to the value returned after conversion.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name" colspan="2">Parameters byte position:</th></tr>
+<tr class="field-odd field"><td>&nbsp;</td><td class="field-body">Byte containing throttle position.
+- Minimum Value: 0
+- Maximum Value: 100
+- %</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="Elm327::o2SensorBank1Sensor1__byteR.byteR">
+byte <tt class="descclassname">Elm327::</tt><tt class="descname">o2SensorBank1Sensor1</tt><big>(</big>byte&amp; <em>voltage</em>, byte&amp; <em>trim</em><big>)</big><a class="headerlink" href="#Elm327::o2SensorBank1Sensor1__byteR.byteR" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="Elm327::o2SensorBank1Sensor2__byteR.byteR">
+byte <tt class="descclassname">Elm327::</tt><tt class="descname">o2SensorBank1Sensor2</tt><big>(</big>byte&amp; <em>voltage</em>, byte&amp; <em>trim</em><big>)</big><a class="headerlink" href="#Elm327::o2SensorBank1Sensor2__byteR.byteR" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="Elm327::o2SensorBank1Sensor3__byteR.byteR">
+byte <tt class="descclassname">Elm327::</tt><tt class="descname">o2SensorBank1Sensor3</tt><big>(</big>byte&amp; <em>voltage</em>, byte&amp; <em>trim</em><big>)</big><a class="headerlink" href="#Elm327::o2SensorBank1Sensor3__byteR.byteR" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="Elm327::o2SensorBank1Sensor4__byteR.byteR">
+byte <tt class="descclassname">Elm327::</tt><tt class="descname">o2SensorBank1Sensor4</tt><big>(</big>byte&amp; <em>voltage</em>, byte&amp; <em>trim</em><big>)</big><a class="headerlink" href="#Elm327::o2SensorBank1Sensor4__byteR.byteR" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="Elm327::o2SensorBank2Sensor1__byteR.byteR">
+byte <tt class="descclassname">Elm327::</tt><tt class="descname">o2SensorBank2Sensor1</tt><big>(</big>byte&amp; <em>voltage</em>, byte&amp; <em>trim</em><big>)</big><a class="headerlink" href="#Elm327::o2SensorBank2Sensor1__byteR.byteR" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="Elm327::o2SensorBank2Sensor2__byteR.byteR">
+byte <tt class="descclassname">Elm327::</tt><tt class="descname">o2SensorBank2Sensor2</tt><big>(</big>byte&amp; <em>voltage</em>, byte&amp; <em>trim</em><big>)</big><a class="headerlink" href="#Elm327::o2SensorBank2Sensor2__byteR.byteR" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="Elm327::o2SensorBank2Sensor3__byteR.byteR">
+byte <tt class="descclassname">Elm327::</tt><tt class="descname">o2SensorBank2Sensor3</tt><big>(</big>byte&amp; <em>voltage</em>, byte&amp; <em>trim</em><big>)</big><a class="headerlink" href="#Elm327::o2SensorBank2Sensor3__byteR.byteR" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="Elm327::o2SensorBank2Sensor4__byteR.byteR">
+byte <tt class="descclassname">Elm327::</tt><tt class="descname">o2SensorBank2Sensor4</tt><big>(</big>byte&amp; <em>voltage</em>, byte&amp; <em>trim</em><big>)</big><a class="headerlink" href="#Elm327::o2SensorBank2Sensor4__byteR.byteR" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="Elm327::o2sensorRead__cCP.byteR.byteR">
+byte <tt class="descclassname">Elm327::</tt><tt class="descname">o2sensorRead</tt><big>(</big>const char* <em>bank</em>, byte&amp; <em>voltage</em>, byte&amp; <em>trim</em><big>)</big><a class="headerlink" href="#Elm327::o2sensorRead__cCP.byteR.byteR" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="Elm327::auxiliaryInputStatus__bR">
+byte <tt class="descclassname">Elm327::</tt><tt class="descname">auxiliaryInputStatus</tt><big>(</big>bool&amp; <em>auxStatus</em><big>)</big><a class="headerlink" href="#Elm327::auxiliaryInputStatus__bR" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="Elm327::engineRunTime__unsigned-iR">
+byte <tt class="descclassname">Elm327::</tt><tt class="descname">engineRunTime</tt><big>(</big>unsigned int&amp; <em>runTime</em><big>)</big><a class="headerlink" href="#Elm327::engineRunTime__unsigned-iR" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="Elm327::distanceMIL__unsigned-iR">
+byte <tt class="descclassname">Elm327::</tt><tt class="descname">distanceMIL</tt><big>(</big>unsigned int&amp; <em>distance</em><big>)</big><a class="headerlink" href="#Elm327::distanceMIL__unsigned-iR" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="Elm327::relativeFuelRailPressure__unsigned-iR">
+byte <tt class="descclassname">Elm327::</tt><tt class="descname">relativeFuelRailPressure</tt><big>(</big>unsigned int&amp; <em>pressure</em><big>)</big><a class="headerlink" href="#Elm327::relativeFuelRailPressure__unsigned-iR" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="Elm327::absoluteFuelRailPressure__unsigned-iR">
+byte <tt class="descclassname">Elm327::</tt><tt class="descname">absoluteFuelRailPressure</tt><big>(</big>unsigned int&amp; <em>pressure</em><big>)</big><a class="headerlink" href="#Elm327::absoluteFuelRailPressure__unsigned-iR" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="Elm327::o2S1WRVoltage__unsigned-iR.unsigned-iR">
+byte <tt class="descclassname">Elm327::</tt><tt class="descname">o2S1WRVoltage</tt><big>(</big>unsigned int&amp; <em>equivRatio</em>, unsigned int&amp; <em>voltage</em><big>)</big><a class="headerlink" href="#Elm327::o2S1WRVoltage__unsigned-iR.unsigned-iR" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="Elm327::o2S2WRVoltage__unsigned-iR.unsigned-iR">
+byte <tt class="descclassname">Elm327::</tt><tt class="descname">o2S2WRVoltage</tt><big>(</big>unsigned int&amp; <em>equivRatio</em>, unsigned int&amp; <em>voltage</em><big>)</big><a class="headerlink" href="#Elm327::o2S2WRVoltage__unsigned-iR.unsigned-iR" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="Elm327::o2S3WRVoltage__unsigned-iR.unsigned-iR">
+byte <tt class="descclassname">Elm327::</tt><tt class="descname">o2S3WRVoltage</tt><big>(</big>unsigned int&amp; <em>equivRatio</em>, unsigned int&amp; <em>voltage</em><big>)</big><a class="headerlink" href="#Elm327::o2S3WRVoltage__unsigned-iR.unsigned-iR" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="Elm327::o2S4WRVoltage__unsigned-iR.unsigned-iR">
+byte <tt class="descclassname">Elm327::</tt><tt class="descname">o2S4WRVoltage</tt><big>(</big>unsigned int&amp; <em>equivRatio</em>, unsigned int&amp; <em>voltage</em><big>)</big><a class="headerlink" href="#Elm327::o2S4WRVoltage__unsigned-iR.unsigned-iR" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="Elm327::o2S5WRVoltage__unsigned-iR.unsigned-iR">
+byte <tt class="descclassname">Elm327::</tt><tt class="descname">o2S5WRVoltage</tt><big>(</big>unsigned int&amp; <em>equivRatio</em>, unsigned int&amp; <em>voltage</em><big>)</big><a class="headerlink" href="#Elm327::o2S5WRVoltage__unsigned-iR.unsigned-iR" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="Elm327::o2S6WRVoltage__unsigned-iR.unsigned-iR">
+byte <tt class="descclassname">Elm327::</tt><tt class="descname">o2S6WRVoltage</tt><big>(</big>unsigned int&amp; <em>equivRatio</em>, unsigned int&amp; <em>voltage</em><big>)</big><a class="headerlink" href="#Elm327::o2S6WRVoltage__unsigned-iR.unsigned-iR" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="Elm327::o2S7WRVoltage__unsigned-iR.unsigned-iR">
+byte <tt class="descclassname">Elm327::</tt><tt class="descname">o2S7WRVoltage</tt><big>(</big>unsigned int&amp; <em>equivRatio</em>, unsigned int&amp; <em>voltage</em><big>)</big><a class="headerlink" href="#Elm327::o2S7WRVoltage__unsigned-iR.unsigned-iR" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="Elm327::o2S8WRVoltage__unsigned-iR.unsigned-iR">
+byte <tt class="descclassname">Elm327::</tt><tt class="descname">o2S8WRVoltage</tt><big>(</big>unsigned int&amp; <em>equivRatio</em>, unsigned int&amp; <em>voltage</em><big>)</big><a class="headerlink" href="#Elm327::o2S8WRVoltage__unsigned-iR.unsigned-iR" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="Elm327::commandedEGR__byteR">
+byte <tt class="descclassname">Elm327::</tt><tt class="descname">commandedEGR</tt><big>(</big>byte&amp; <em>egr</em><big>)</big><a class="headerlink" href="#Elm327::commandedEGR__byteR" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="Elm327::EGRError__iR">
+byte <tt class="descclassname">Elm327::</tt><tt class="descname">EGRError</tt><big>(</big>int&amp; <em>error</em><big>)</big><a class="headerlink" href="#Elm327::EGRError__iR" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="Elm327::commandedEvaporativePurge__byteR">
+byte <tt class="descclassname">Elm327::</tt><tt class="descname">commandedEvaporativePurge</tt><big>(</big>byte&amp; <em>purge</em><big>)</big><a class="headerlink" href="#Elm327::commandedEvaporativePurge__byteR" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="Elm327::fuelLevel__byteR">
+byte <tt class="descclassname">Elm327::</tt><tt class="descname">fuelLevel</tt><big>(</big>byte&amp; <em>level</em><big>)</big><a class="headerlink" href="#Elm327::fuelLevel__byteR" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="Elm327::warmUpsSinceLastCleared__byteR">
+byte <tt class="descclassname">Elm327::</tt><tt class="descname">warmUpsSinceLastCleared</tt><big>(</big>byte&amp; <em>warmUps</em><big>)</big><a class="headerlink" href="#Elm327::warmUpsSinceLastCleared__byteR" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="Elm327::distanceSinceLastCleared__unsigned-iR">
+byte <tt class="descclassname">Elm327::</tt><tt class="descname">distanceSinceLastCleared</tt><big>(</big>unsigned int&amp; <em>distance</em><big>)</big><a class="headerlink" href="#Elm327::distanceSinceLastCleared__unsigned-iR" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="Elm327::evapPressure__iR">
+byte <tt class="descclassname">Elm327::</tt><tt class="descname">evapPressure</tt><big>(</big>int&amp; <em>pressure</em><big>)</big><a class="headerlink" href="#Elm327::evapPressure__iR" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="barometricPressure__byteR">
+byte <tt class="descname">barometricPressure</tt><big>(</big>byte&amp; <em>pressure</em><big>)</big><a class="headerlink" href="#barometricPressure__byteR" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="Elm327::o2S1WRCurrent__unsigned-iR.iR">
+byte <tt class="descclassname">Elm327::</tt><tt class="descname">o2S1WRCurrent</tt><big>(</big>unsigned int&amp; <em>equivRatio</em>, int&amp; <em>current</em><big>)</big><a class="headerlink" href="#Elm327::o2S1WRCurrent__unsigned-iR.iR" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="Elm327::o2S2WRCurrent__unsigned-iR.iR">
+byte <tt class="descclassname">Elm327::</tt><tt class="descname">o2S2WRCurrent</tt><big>(</big>unsigned int&amp; <em>equivRatio</em>, int&amp; <em>current</em><big>)</big><a class="headerlink" href="#Elm327::o2S2WRCurrent__unsigned-iR.iR" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="Elm327::o2S3WRCurrent__unsigned-iR.iR">
+byte <tt class="descclassname">Elm327::</tt><tt class="descname">o2S3WRCurrent</tt><big>(</big>unsigned int&amp; <em>equivRatio</em>, int&amp; <em>current</em><big>)</big><a class="headerlink" href="#Elm327::o2S3WRCurrent__unsigned-iR.iR" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="Elm327::o2S4WRCurrent__unsigned-iR.iR">
+byte <tt class="descclassname">Elm327::</tt><tt class="descname">o2S4WRCurrent</tt><big>(</big>unsigned int&amp; <em>equivRatio</em>, int&amp; <em>current</em><big>)</big><a class="headerlink" href="#Elm327::o2S4WRCurrent__unsigned-iR.iR" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="Elm327::o2S5WRCurrent__unsigned-iR.iR">
+byte <tt class="descclassname">Elm327::</tt><tt class="descname">o2S5WRCurrent</tt><big>(</big>unsigned int&amp; <em>equivRatio</em>, int&amp; <em>current</em><big>)</big><a class="headerlink" href="#Elm327::o2S5WRCurrent__unsigned-iR.iR" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="Elm327::o2S6WRCurrent__unsigned-iR.iR">
+byte <tt class="descclassname">Elm327::</tt><tt class="descname">o2S6WRCurrent</tt><big>(</big>unsigned int&amp; <em>equivRatio</em>, int&amp; <em>current</em><big>)</big><a class="headerlink" href="#Elm327::o2S6WRCurrent__unsigned-iR.iR" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="Elm327::o2S7WRCurrent__unsigned-iR.iR">
+byte <tt class="descclassname">Elm327::</tt><tt class="descname">o2S7WRCurrent</tt><big>(</big>unsigned int&amp; <em>equivRatio</em>, int&amp; <em>current</em><big>)</big><a class="headerlink" href="#Elm327::o2S7WRCurrent__unsigned-iR.iR" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="Elm327::o2S8WRCurrent__unsigned-iR.iR">
+byte <tt class="descclassname">Elm327::</tt><tt class="descname">o2S8WRCurrent</tt><big>(</big>unsigned int&amp; <em>equivRatio</em>, int&amp; <em>current</em><big>)</big><a class="headerlink" href="#Elm327::o2S8WRCurrent__unsigned-iR.iR" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="Elm327::catalystTemperatureBank1Sensor1__iR">
+byte <tt class="descclassname">Elm327::</tt><tt class="descname">catalystTemperatureBank1Sensor1</tt><big>(</big>int&amp; <em>temperature</em><big>)</big><a class="headerlink" href="#Elm327::catalystTemperatureBank1Sensor1__iR" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="Elm327::catalystTemperatureBank2Sensor1__iR">
+byte <tt class="descclassname">Elm327::</tt><tt class="descname">catalystTemperatureBank2Sensor1</tt><big>(</big>int&amp; <em>temperature</em><big>)</big><a class="headerlink" href="#Elm327::catalystTemperatureBank2Sensor1__iR" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="Elm327::catalystTemperatureBank1Sensor2__iR">
+byte <tt class="descclassname">Elm327::</tt><tt class="descname">catalystTemperatureBank1Sensor2</tt><big>(</big>int&amp; <em>temperature</em><big>)</big><a class="headerlink" href="#Elm327::catalystTemperatureBank1Sensor2__iR" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="Elm327::catalystTemperatureBank2Sensor2__iR">
+byte <tt class="descclassname">Elm327::</tt><tt class="descname">catalystTemperatureBank2Sensor2</tt><big>(</big>int&amp; <em>temperature</em><big>)</big><a class="headerlink" href="#Elm327::catalystTemperatureBank2Sensor2__iR" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="Elm327::controlModuleVoltage__unsigned-iR">
+byte <tt class="descclassname">Elm327::</tt><tt class="descname">controlModuleVoltage</tt><big>(</big>unsigned int&amp; <em>voltage</em><big>)</big><a class="headerlink" href="#Elm327::controlModuleVoltage__unsigned-iR" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="Elm327::absoluteLoadValue__unsigned-iR">
+byte <tt class="descclassname">Elm327::</tt><tt class="descname">absoluteLoadValue</tt><big>(</big>unsigned int&amp; <em>load</em><big>)</big><a class="headerlink" href="#Elm327::absoluteLoadValue__unsigned-iR" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="Elm327::commandEquivalenceRatio__floatR">
+byte <tt class="descclassname">Elm327::</tt><tt class="descname">commandEquivalenceRatio</tt><big>(</big>float&amp; <em>ratio</em><big>)</big><a class="headerlink" href="#Elm327::commandEquivalenceRatio__floatR" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="Elm327::relativeThrottlePosition__byteR">
+byte <tt class="descclassname">Elm327::</tt><tt class="descname">relativeThrottlePosition</tt><big>(</big>byte&amp; <em>position</em><big>)</big><a class="headerlink" href="#Elm327::relativeThrottlePosition__byteR" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="Elm327::ambientAirTemperature__iR">
+byte <tt class="descclassname">Elm327::</tt><tt class="descname">ambientAirTemperature</tt><big>(</big>int&amp; <em>temperature</em><big>)</big><a class="headerlink" href="#Elm327::ambientAirTemperature__iR" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="Elm327::absoluteThrottlePositionB__byteR">
+byte <tt class="descclassname">Elm327::</tt><tt class="descname">absoluteThrottlePositionB</tt><big>(</big>byte&amp; <em>position</em><big>)</big><a class="headerlink" href="#Elm327::absoluteThrottlePositionB__byteR" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="Elm327::absoluteThrottlePositionC__byteR">
+byte <tt class="descclassname">Elm327::</tt><tt class="descname">absoluteThrottlePositionC</tt><big>(</big>byte&amp; <em>position</em><big>)</big><a class="headerlink" href="#Elm327::absoluteThrottlePositionC__byteR" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="Elm327::acceleratorPedalPositionD__byteR">
+byte <tt class="descclassname">Elm327::</tt><tt class="descname">acceleratorPedalPositionD</tt><big>(</big>byte&amp; <em>position</em><big>)</big><a class="headerlink" href="#Elm327::acceleratorPedalPositionD__byteR" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="Elm327::acceleratorPedalPositionE__byteR">
+byte <tt class="descclassname">Elm327::</tt><tt class="descname">acceleratorPedalPositionE</tt><big>(</big>byte&amp; <em>position</em><big>)</big><a class="headerlink" href="#Elm327::acceleratorPedalPositionE__byteR" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="Elm327::acceleratorPedalPositionF__byteR">
+byte <tt class="descclassname">Elm327::</tt><tt class="descname">acceleratorPedalPositionF</tt><big>(</big>byte&amp; <em>position</em><big>)</big><a class="headerlink" href="#Elm327::acceleratorPedalPositionF__byteR" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="Elm327::commandedThrottleActuator__byteR">
+byte <tt class="descclassname">Elm327::</tt><tt class="descname">commandedThrottleActuator</tt><big>(</big>byte&amp; <em>position</em><big>)</big><a class="headerlink" href="#Elm327::commandedThrottleActuator__byteR" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+  <h3><a href="index.html">Table Of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">MACROS</a></li>
+<li><a class="reference internal" href="#classes">Classes</a></li>
+</ul>
+
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="index.html"
+                        title="previous chapter">Arduino ELM327&#8217;s documentation!</a></p>
+  <h3>This Page</h3>
+  <ul class="this-page-menu">
+    <li><a href="_sources/ELM327.txt"
+           rel="nofollow">Show Source</a></li>
+  </ul>
+<div id="searchbox" style="display: none">
+  <h3>Quick search</h3>
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="index.html" title="Arduino ELM327’s documentation!"
+             >previous</a> |</li>
+        <li><a href="index.html">Arduino ELM327  1.0 documentation</a> &raquo;</li> 
+      </ul>
+    </div>
+    <div class="footer">
+        &copy; Copyright 2014, David Irvine.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.2.2.
+    </div>
+  </body>
+</html>
