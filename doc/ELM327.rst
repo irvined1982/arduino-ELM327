@@ -441,4 +441,5 @@ Classes
 .. cpp:function:: byte Elm327::acceleratorPedalPositionF(byte &position)
 
 .. cpp:function:: byte Elm327::commandedThrottleActuator(byte &position)
-		
+
+.. cpp:function:: byte Elm327::getBytes( const char *mode, const char *chkMode, const char *pid, byte *values, unsigned int numValues)
