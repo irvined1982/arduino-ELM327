@@ -573,7 +573,7 @@ byte Elm327::getBytes( const char *mode, const char *chkMode, const char *pid, b
 	char data[64];
 	byte status;
 	char hexVal[]="0x00";
-	char cmd[5];
+	char cmd[6];
 	cmd[0]=mode[0];
 	cmd[1]=mode[1];
 	cmd[2]=' ';
